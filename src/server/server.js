@@ -1,7 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-// const cityRouter = require('../routes/city.routes')
 const productRouter = require('../routes/product.routes')
 const categoryRouter = require('../routes/category.routes')
 
@@ -28,7 +27,6 @@ class Server {
   }
 
   routes () {
-    // this.app.use('/api/city', cityRouter)
     this.app.use('/api/product', productRouter)
     this.app.use('/api/category', categoryRouter)
 
