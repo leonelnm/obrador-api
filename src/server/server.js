@@ -3,7 +3,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 // const cityRouter = require('../routes/city.routes')
 const productRouter = require('../routes/product.routes')
-const catgoryRouter = require('../routes/category.routes')
+const categoryRouter = require('../routes/category.routes')
 
 class Server {
   constructor () {
@@ -28,13 +28,9 @@ class Server {
   }
 
   routes () {
-    this.app.get('/', (req, res) => {
-      res.send('Hello World!')
-    })
-
     // this.app.use('/api/city', cityRouter)
     this.app.use('/api/product', productRouter)
-    this.app.use('/api/category', catgoryRouter)
+    this.app.use('/api/category', categoryRouter)
 
     // Errors
     this.app.use((req, res) => {

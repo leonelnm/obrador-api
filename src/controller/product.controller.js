@@ -1,6 +1,7 @@
 const { request, response } = require('express')
 const Category = require('../models/Category')
 const Product = require('../models/Product')
+const { categoryViews, productViews } = require('../utils/viewUtils')
 const STATUS_RESPONSE = require('../utils/statusUtils')
 
 const getAll = async (req = request, res = response) => {
@@ -17,15 +18,25 @@ const getAll = async (req = request, res = response) => {
 }
 
 const getAllWithCategories = async (req = request, res = response) => {
+  const { active } = req.query
+  let whereStatment = {}
+  if (active !== undefined) {
+    whereStatment = { active: active === 'true' }
+  }
+
   let products = []
   try {
     products = await Product.findAll({
-      include: [
-        {
-          model: Category,
-          as: 'categories'
+      where: whereStatment,
+      attributes: productViews,
+      include: [{
+        model: Category,
+        as: 'categories',
+        attributes: categoryViews,
+        through: {
+          attributes: []
         }
-      ]
+      }]
     })
   } catch (error) {
     res.status(400).json({
@@ -38,6 +49,8 @@ const getAllWithCategories = async (req = request, res = response) => {
 
 const getProduct = async (req = request, res = response) => {
   const { id } = req.params
+
+  const query = req.query
 
   if (isNaN(id)) {
     return res.status(400).json({
@@ -55,6 +68,8 @@ const getProduct = async (req = request, res = response) => {
       ]
     })
 
+    console.log({ query })
+
     if (product) {
       return res.status(200).json(product)
     } else {
@@ -70,10 +85,9 @@ const create = async (req, res = response) => {
 
   try {
     const product = await Product.create(
-      { ...body },
-      { include: 'categories' }
+      { ...body }
     )
-    // product.setCategories(body.categories)
+    product.setCategories(body.categories)
 
     return res.json(product)
   } catch (error) {
