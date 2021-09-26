@@ -3,6 +3,7 @@ const Category = require('../models/Category')
 const Product = require('../models/Product')
 const { categoryViews, productViews } = require('../utils/viewUtils')
 const STATUS_RESPONSE = require('../utils/statusUtils')
+const PRODUCTSINFO = require('./info')
 
 const getAll = async (req = request, res = response) => {
   let products = []
@@ -94,6 +95,46 @@ const create = async (req, res = response) => {
     console.log(error)
     res.status(500).json(STATUS_RESPONSE[500])
   }
+}
+
+const loadDataFromArray = async () => {
+  const products = PRODUCTSINFO
+
+  for (const p of products) {
+    const
+      {
+        url,
+        content,
+        imgId,
+        placeholder,
+        name,
+        price
+      } = p
+
+    const contenido = content.join('<>')
+    const precio = price === '' ? '0.0' : price
+
+    try {
+      const product = await Product.create(
+        {
+          imgUrl: url,
+          content: contenido,
+          imgId,
+          imgPlaceholder: placeholder,
+          name,
+          price: precio
+        }
+      )
+      await product.setCategories(p.categories)
+    } catch (error) {
+      console.log('creando')
+      console.log(error)
+      console.log({ p })
+      break
+    }
+  }
+
+  console.log('end')
 }
 
 module.exports = {

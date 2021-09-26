@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const instanceDb = require('../config/connection.config')
+const { instanceDb } = require('../config/connection.config')
 const DataTypes = Sequelize.DataTypes
 
 const Category = instanceDb.define('Category', {

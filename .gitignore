@@ -1,5 +1,7 @@
 node_modules/
 *.lock
 .env
+.env_local
+.env_prod
 
 .vscode

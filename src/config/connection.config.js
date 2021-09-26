@@ -1,23 +1,38 @@
-// import dotenv from 'dotenv'
 const Sequelize = require('sequelize')
-
-// dotenv.config()
 
 const instanceDb = new Sequelize(
   process.env.DATABASE,
-  process.env.USERNAME,
-  process.env.PASSWORD,
+  process.env.USERNAMEDB,
+  process.env.PASSWORDDB,
   {
-    host: process.env.HOST,
-    dialect: 'mariadb',
+    dialect: process.env.DIALECTDB,
+    host: process.env.HOSTDB,
+    port: process.env.PORTDB,
+
+    logging: false,
 
     pool: {
-      max: Number(process.env.POOL_MAX),
-      min: Number(process.env.POOL_MIN),
-      acquire: Number(process.env.POOL_ACQUIRE),
-      idle: Number(process.env.POOL_IDLE)
+      max: Number(process.env.POOL_MAXDB),
+      min: Number(process.env.POOL_MINDB),
+      acquire: Number(process.env.POOL_ACQUIREDB),
+      idle: Number(process.env.POOL_IDLEDB)
     }
   }
 )
 
-module.exports = instanceDb
+const dbConnection = async () => {
+  try {
+    await instanceDb.authenticate()
+
+    await instanceDb.sync({ forde: true })
+    console.log('Database online')
+  } catch (error) {
+    console.log({ error })
+    throw new Error(error)
+  }
+}
+
+module.exports = {
+  instanceDb,
+  dbConnection
+}

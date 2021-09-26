@@ -1,9 +1,15 @@
 const Sequlize = require('sequelize')
-const instanceDb = require('../config/connection.config')
+const { instanceDb } = require('../config/connection.config')
 
 const DataTypes = Sequlize.DataTypes
 
 const Product = instanceDb.define('Product', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    allowNull: false,
+    primaryKey: true
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
