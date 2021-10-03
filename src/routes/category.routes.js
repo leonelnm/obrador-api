@@ -1,10 +1,12 @@
 const { Router } = require('express')
 const { getAll, create, getAllWithProducts } = require('../controller/category.controller')
 
+const userExtractor = require('../middleware/userExtractor')
+
 const catgoryRouter = Router()
 
-catgoryRouter.get('/', getAll)
+catgoryRouter.get('/', userExtractor, getAll)
 catgoryRouter.get('/full', getAllWithProducts)
-catgoryRouter.post('/', create)
+catgoryRouter.post('/', userExtractor, create)
 
 module.exports = catgoryRouter

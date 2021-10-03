@@ -3,22 +3,19 @@ const Category = require('../models/Category')
 const Product = require('../models/Product')
 const { categoryViews, productViews } = require('../utils/viewUtils')
 const STATUS_RESPONSE = require('../utils/statusUtils')
-const PRODUCTSINFO = require('./info')
 
-const getAll = async (req = request, res = response) => {
+const getAll = async (req = request, res = response, next) => {
   let products = []
   try {
     products = await Product.findAll()
   } catch (error) {
-    res.status(400).json({
-      error
-    })
+    next(error)
   }
 
   res.status(200).json(products)
 }
 
-const getAllWithCategories = async (req = request, res = response) => {
+const getAllWithCategories = async (req = request, res = response, next) => {
   const { active } = req.query
   let whereStatment = {}
   if (active !== undefined) {
@@ -40,18 +37,14 @@ const getAllWithCategories = async (req = request, res = response) => {
       }]
     })
   } catch (error) {
-    res.status(400).json({
-      error
-    })
+    next(error)
   }
 
   res.status(200).json(products)
 }
 
-const getProduct = async (req = request, res = response) => {
+const getProduct = async (req = request, res = response, next) => {
   const { id } = req.params
-
-  const query = req.query
 
   if (isNaN(id)) {
     return res.status(400).json({
@@ -69,19 +62,17 @@ const getProduct = async (req = request, res = response) => {
       ]
     })
 
-    console.log({ query })
-
     if (product) {
       return res.status(200).json(product)
     } else {
       return res.status(404).json(STATUS_RESPONSE[404])
     }
   } catch (error) {
-    res.status(500).json(STATUS_RESPONSE[500])
+    next(error)
   }
 }
 
-const create = async (req, res = response) => {
+const create = async (req, res = response, next) => {
   const { body } = req
 
   try {
@@ -92,49 +83,8 @@ const create = async (req, res = response) => {
 
     return res.json(product)
   } catch (error) {
-    console.log(error)
-    res.status(500).json(STATUS_RESPONSE[500])
+    next(error)
   }
-}
-
-const loadDataFromArray = async () => {
-  const products = PRODUCTSINFO
-
-  for (const p of products) {
-    const
-      {
-        url,
-        content,
-        imgId,
-        placeholder,
-        name,
-        price
-      } = p
-
-    const contenido = content.join('<>')
-    const precio = price === '' ? '0.0' : price
-
-    try {
-      const product = await Product.create(
-        {
-          imgUrl: url,
-          content: contenido,
-          imgId,
-          imgPlaceholder: placeholder,
-          name,
-          price: precio
-        }
-      )
-      await product.setCategories(p.categories)
-    } catch (error) {
-      console.log('creando')
-      console.log(error)
-      console.log({ p })
-      break
-    }
-  }
-
-  console.log('end')
 }
 
 module.exports = {

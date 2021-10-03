@@ -1,4 +1,5 @@
 const { request, response } = require('express')
+
 const Category = require('../models/Category')
 const Product = require('../models/Product')
 const { productViews, categoryViews } = require('../utils/viewUtils')
