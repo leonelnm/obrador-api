@@ -1,2 +1,2 @@
-GET http://localhost:3000/api/category HTTP/1.1
+GET http://localhost:3010/api/category HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYjRiMzUxLTJjNzUtNDVlMi04ZGUzLTc1OGI2MDIyY2U5YSIsInVzZXJuYW1lIjoidXNlciIsImlhdCI6MTYzMzI2NzA2M30.qdjk_KIJzYCYK38Bw71iqm3M6amR7Xm_QvGsLWhWkV4
