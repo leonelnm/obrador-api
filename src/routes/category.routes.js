@@ -6,7 +6,7 @@ const userExtractor = require('../middleware/userExtractor')
 const catgoryRouter = Router()
 
 catgoryRouter.get('/', userExtractor, getAll)
-catgoryRouter.get('/full', getAllWithProducts)
+catgoryRouter.get('/full', userExtractor, getAllWithProducts)
 catgoryRouter.post('/', userExtractor, create)
 
 module.exports = catgoryRouter

@@ -28,9 +28,8 @@ const login = async (req = request, res = response) => {
       }
 
       const secret = process.env.JWTSECRET
-      console.log({ secret })
       const token = jwt.sign(userForToken, secret, {
-        expiresIn: 60 * 60 * 24 * 7
+        expiresIn: '12h'
       })
 
       res.status(200).json({

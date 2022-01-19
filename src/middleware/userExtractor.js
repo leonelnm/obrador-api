@@ -4,8 +4,6 @@ const { request, response } = require('express')
 module.exports = (req = request, res = response, next) => {
   const auth = req.get('Authorization')
 
-  console.log({ auth })
-
   let token = ''
   if (auth && auth.toLocaleLowerCase().startsWith('bearer')) {
     token = auth.substring(7)
