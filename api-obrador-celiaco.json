@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "api-obrador-celiaco",
+      "script": "npm",
+      "args": "start"
+    }
+  ]
+}
