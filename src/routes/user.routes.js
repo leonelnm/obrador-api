@@ -6,6 +6,6 @@ const userExtractor = require('../middleware/userExtractor')
 const userRouter = Router()
 
 userRouter.get('/', userExtractor, getAll)
-userRouter.post('/', userExtractor, create)
+userRouter.post('/', create)
 
 module.exports = userRouter
